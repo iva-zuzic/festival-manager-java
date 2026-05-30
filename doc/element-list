@@ -1,0 +1,5 @@
+hr.tvz.festivalmanager.app
+hr.tvz.festivalmanager.entities
+hr.tvz.festivalmanager.repository
+hr.tvz.festivalmanager.repository.console
+hr.tvz.festivalmanager.service
