@@ -3,6 +3,7 @@ package hr.tvz.festivalmanager.app;
 import hr.tvz.festivalmanager.entities.*;
 import hr.tvz.festivalmanager.repository.*;
 import hr.tvz.festivalmanager.repository.console.*;
+import hr.tvz.festivalmanager.repository.files.json.JsonMemberRepository;
 import hr.tvz.festivalmanager.repository.files.json.JsonStageRepository;
 import hr.tvz.festivalmanager.service.*;
 import org.slf4j.Logger;
@@ -51,7 +52,7 @@ public class Main {
      * nad njima mogla primijeniti polimorfna obrada podataka.
      */
     private static void startApplication() {
-        MemberRepository memberRepository = new ConsoleMemberRepository();
+        MemberRepository memberRepository = new JsonMemberRepository();
         WorkerRepository workerRepository = new ConsoleWorkerRepository();
         ArtistRepository artistRepository = new ConsoleArtistRepository(memberRepository);
         StageRepository stageRepository = new JsonStageRepository();

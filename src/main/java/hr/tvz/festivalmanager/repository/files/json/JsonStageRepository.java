@@ -39,9 +39,9 @@ public class JsonStageRepository implements StageRepository {
                 stages.add(stage);
             }
 
-            logger.info("Stage podaci uspješno su učitani iz JSON datoteke.");
+            logger.info("Stage(pozornica) podaci uspješno su učitani iz JSON datoteke.");
         } catch (IOException exception){
-            logger.error("Dogodila se pogreška kod čitanja stageova iz JSON datoteke.", exception);
+            logger.error("Dogodila se pogreška kod čitanja pozornica(stageova) iz JSON datoteke.", exception);
         }
     }
 

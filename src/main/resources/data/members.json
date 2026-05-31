@@ -1,0 +1,23 @@
+[
+  {
+    "firstName": "Lana",
+    "lastName": "Horvat",
+    "email": "lana.horvat@example.com",
+    "dateOfBirth": "15.04.2001.",
+    "role": "VOKALIST"
+  },
+  {
+    "firstName": "Marko",
+    "lastName": "Kovač",
+    "email": "marko.kovac@example.com",
+    "dateOfBirth": "22.09.1999.",
+    "role": "GITARIST"
+  },
+  {
+    "firstName": "Mia",
+    "lastName": "Babić",
+    "email": "mia.babic@example.com",
+    "dateOfBirth": "03.12.2002.",
+    "role": "BUBNJAR"
+  }
+]
