@@ -1,0 +1,18 @@
+[
+  {
+    "capacity": 5000,
+    "name": "Main Stage"
+  },
+  {
+    "capacity": 800,
+    "name": "Acoustic Stage"
+  },
+  {
+    "capacity": 2500,
+    "name": "Electronic Stage"
+  },
+  {
+    "capacity": 1234,
+    "name": "Test Stage"
+  }
+]
