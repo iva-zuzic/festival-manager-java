@@ -3,6 +3,7 @@ package hr.tvz.festivalmanager.app;
 import hr.tvz.festivalmanager.entities.*;
 import hr.tvz.festivalmanager.repository.*;
 import hr.tvz.festivalmanager.repository.console.*;
+import hr.tvz.festivalmanager.repository.files.json.JsonStageRepository;
 import hr.tvz.festivalmanager.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,7 @@ public class Main {
         MemberRepository memberRepository = new ConsoleMemberRepository();
         WorkerRepository workerRepository = new ConsoleWorkerRepository();
         ArtistRepository artistRepository = new ConsoleArtistRepository(memberRepository);
-        StageRepository stageRepository = new ConsoleStageRepository();
+        StageRepository stageRepository = new JsonStageRepository();
         PerformanceRepository performanceRepository = new ConsolePerformanceRepository(artistRepository, stageRepository);
 
         memberRepository.inputAllEntities();

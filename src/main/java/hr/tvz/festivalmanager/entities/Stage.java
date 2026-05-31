@@ -1,4 +1,6 @@
 package hr.tvz.festivalmanager.entities;
 
-public record Stage(String name, int capacity) {
+import java.io.Serializable;
+
+public record Stage(String name, int capacity) implements Serializable {
 }
