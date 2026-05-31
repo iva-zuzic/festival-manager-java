@@ -5,6 +5,7 @@ import hr.tvz.festivalmanager.repository.*;
 import hr.tvz.festivalmanager.repository.console.*;
 import hr.tvz.festivalmanager.repository.files.json.JsonMemberRepository;
 import hr.tvz.festivalmanager.repository.files.json.JsonStageRepository;
+import hr.tvz.festivalmanager.repository.files.json.JsonWorkerRepository;
 import hr.tvz.festivalmanager.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static hr.tvz.festivalmanager.util.ConsoleUtils.readNonNegativeInt;
 import static hr.tvz.festivalmanager.util.ConsoleUtils.readString;
@@ -53,7 +56,7 @@ public class Main {
      */
     private static void startApplication() {
         MemberRepository memberRepository = new JsonMemberRepository();
-        WorkerRepository workerRepository = new ConsoleWorkerRepository();
+        WorkerRepository workerRepository = new JsonWorkerRepository();
         ArtistRepository artistRepository = new ConsoleArtistRepository(memberRepository);
         StageRepository stageRepository = new JsonStageRepository();
         PerformanceRepository performanceRepository = new ConsolePerformanceRepository(artistRepository, stageRepository);
@@ -121,7 +124,7 @@ public class Main {
                 case 4 -> log.info("Umjetnici sortirani po honoraru: {}", artistService.sortByFee());
                 case 5 -> log.info("Izvedbe grupirane po pozornici: {}", performanceService.groupByStage());
                 case 6 -> log.info("Članovi grupirani po ulozi: {}", memberService.groupByRole());
-                case 7 -> log.info("Radnici podijeljeni na volontere i plaćene: {}", workerService.partitionByVolunteer());
+                case 7 -> displayWorkersByVolunteerStatus(workerRepository);
                 case 8 -> log.info("Umjetnici grupirani po žanru: {}", artistService.groupByGenre());
                 case 9 -> log.info("Najplaćeniji radnik: {}",
                         PersonService.findHighestPaid(workerRepository.getAllEntities()));
@@ -189,5 +192,14 @@ public class Main {
                 log.warn("Nepostojeća uloga člana: {}. Pokušajte ponovno.", roleInput);
             }
         }
+    }
+
+    private static void displayWorkersByVolunteerStatus(WorkerRepository workerRepository) {
+        Map<Boolean, List<Worker>> workersByVolunteerStatus = workerRepository.getAllEntities()
+                .stream()
+                .collect(Collectors.partitioningBy(worker -> Worker.Role.VOLONTER.equals(worker.getRole())));
+
+        log.info("Volonteri: {}", workersByVolunteerStatus.get(true));
+        log.info("Plaćeni radnici: {}", workersByVolunteerStatus.get(false));
     }
 }

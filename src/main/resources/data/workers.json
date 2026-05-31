@@ -1,0 +1,26 @@
+[
+  {
+    "firstName": "Ivan",
+    "lastName": "Marić",
+    "email": "ivan.maric@example.com",
+    "dateOfBirth": "10.02.1995.",
+    "role": "MENADZER",
+    "fee": 1200.00
+  },
+  {
+    "firstName": "Petra",
+    "lastName": "Novak",
+    "email": "petra.novak@example.com",
+    "dateOfBirth": "18.07.1998.",
+    "role": "VOLONTER",
+    "fee": 0
+  },
+  {
+    "firstName": "Luka",
+    "lastName": "Jurić",
+    "email": "luka.juric@example.com",
+    "dateOfBirth": "05.11.1992.",
+    "role": "TONSKI_TEHNICAR",
+    "fee": 900.00
+  }
+]
