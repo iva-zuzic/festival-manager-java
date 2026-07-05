@@ -1,5 +1,7 @@
 package hr.tvz.festivalmanager.entities;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -10,7 +12,9 @@ import java.util.Objects;
  * Klasa implementira sučelje {@link Schedulable}, što znači da ima definirano
  * vrijeme početka i vrijeme završetka.
  */
-public class Performance implements Schedulable {
+public class Performance implements Schedulable, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
     private Artist artist;
     private Stage stage;

@@ -1,5 +1,6 @@
 package hr.tvz.festivalmanager.entities;
 
+import java.io.Serial;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -9,6 +10,9 @@ import java.util.Objects;
  * o ulozi člana u bendu, primjerice vokalist, bubnjar, gitarist ili basist.
  */
 public class Member extends Person {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public enum Role {
         VOKALIST,
         BUBNJAR,

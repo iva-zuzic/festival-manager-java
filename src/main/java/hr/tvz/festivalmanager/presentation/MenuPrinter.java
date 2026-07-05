@@ -6,6 +6,7 @@ import hr.tvz.festivalmanager.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +41,9 @@ public class MenuPrinter {
         log.info("15. Prikaži prosječni honorar po žanru");
         log.info("16. Pretraži izvedbe po umjetniku");
         log.info("17. Prikaži listu svih umjetnika");
+        log.info("18. Kreiraj pričuvnu kopiju");
+        log.info("19. Vrati podatke iz pričuvne kopije");
+        log.info("20. Prikaži log akcija");
         log.info("0. Izlaz");
     }
 
@@ -183,5 +187,21 @@ public class MenuPrinter {
 
     public static void printArtistStageNames(ArtistService artistService) {
         artistService.getArtistStageNames().forEach(name -> log.info(ITEM_FORMAT, name));
+    }
+
+    public static void createBackup(BackupService backupService) {
+        try {
+            backupService.createBackup();
+        } catch (IOException exception) {
+            log.error("Greška pri spremanju pričuvne kopije.", exception);
+        }
+    }
+
+    public static void restoreBackup(BackupService backupService) {
+        try {
+            backupService.restoreBackup();
+        } catch (IOException exception) {
+            log.error("Greška pri vraćanju pričuvne kopije.", exception);
+        }
     }
 }

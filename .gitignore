@@ -41,6 +41,12 @@ build/
 # Log files
 logs/
 
+# Backup file
+backup.bin
+
+# Action log
+action-log.xml
+
 # IntelliJ project files
 .idea/
 *.iml

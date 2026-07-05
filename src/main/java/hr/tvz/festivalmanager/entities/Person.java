@@ -1,5 +1,7 @@
 package hr.tvz.festivalmanager.entities;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -10,7 +12,9 @@ import java.util.Objects;
  * Konkretne podklase određuju vrstu osobe implementacijom metode
  * {@link #getType()}.
  */
-public abstract class Person {
+public abstract class Person implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     protected String firstName;
     protected String lastName;
     protected String email;

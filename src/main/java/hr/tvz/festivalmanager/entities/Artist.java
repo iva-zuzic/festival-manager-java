@@ -1,5 +1,7 @@
 package hr.tvz.festivalmanager.entities;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +14,10 @@ import java.util.Objects;
  * Objekti klase {@code Artist} kreiraju se pomoću {@link ArtistBuilder}
  * builder obrasca.
  */
-public non-sealed class Artist implements Payable {
+public non-sealed class Artist implements Payable, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public enum Genre {
         ROCK,
         METAL,

@@ -1,5 +1,6 @@
 package hr.tvz.festivalmanager.entities;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -12,6 +13,9 @@ import java.util.Objects;
  * zaštitar, volonter ili voditelj pozornice.
  */
 public non-sealed class Worker extends Person implements Payable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public enum Role {
         MENADZER,
         TONSKI_TEHNICAR,
