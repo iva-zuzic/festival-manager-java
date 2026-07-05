@@ -1,0 +1,47 @@
+[
+  {
+    "stageName": "The Firebirds",
+    "genre": "ROCK",
+    "fee": 5000.00,
+    "memberEmails": [
+      "lana.horvat@example.com",
+      "marko.kovac@example.com"
+    ]
+  },
+  {
+    "stageName": "Mia Beats",
+    "genre": "ELECTRONIC",
+    "fee": 3200.00,
+    "memberEmails": [
+      "mia.babic@example.com"
+    ]
+  },
+  {
+    "stageName": "Night Owls",
+    "genre": "POP",
+    "fee": 4100.00,
+    "memberEmails": [
+      "ivana.peric@example.com",
+      "filip.novak@example.com"
+    ]
+  },
+  {
+    "stageName": "Steel Horizon",
+    "genre": "METAL",
+    "fee": 6000.00,
+    "memberEmails": [
+      "marko.kovac@example.com",
+      "mia.babic@example.com"
+    ]
+  },
+  {
+    "stageName": "Smooth Trio",
+    "genre": "JAZZ",
+    "fee": 2800.00,
+    "memberEmails": [
+      "lana.horvat@example.com",
+      "filip.novak@example.com",
+      "ivana.peric@example.com"
+    ]
+  }
+]

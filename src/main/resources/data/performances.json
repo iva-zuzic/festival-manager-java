@@ -1,0 +1,32 @@
+[
+  {
+    "artistStageName": "The Firebirds",
+    "stageName": "Main Stage",
+    "start": "12.07.2026. 20:00",
+    "duration": 90
+  },
+  {
+    "artistStageName": "Mia Beats",
+    "stageName": "Electronic Stage",
+    "start": "12.07.2026. 22:30",
+    "duration": 60
+  },
+  {
+    "artistStageName": "Night Owls",
+    "stageName": "Acoustic Stage",
+    "start": "13.07.2026. 18:00",
+    "duration": 45
+  },
+  {
+    "artistStageName": "Steel Horizon",
+    "stageName": "Main Stage",
+    "start": "13.07.2026. 21:00",
+    "duration": 75
+  },
+  {
+    "artistStageName": "Smooth Trio",
+    "stageName": "Test Stage",
+    "start": "14.07.2026. 19:30",
+    "duration": 50
+  }
+]
