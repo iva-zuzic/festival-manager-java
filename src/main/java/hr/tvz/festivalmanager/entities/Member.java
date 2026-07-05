@@ -37,13 +37,14 @@ public class Member extends Person {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Member member = (Member) o;
         return role == member.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(role);
+        return Objects.hash(super.hashCode(), role);
     }
 
     @Override

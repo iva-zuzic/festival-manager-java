@@ -14,5 +14,9 @@
   {
     "capacity": 1234,
     "name": "Test Stage"
+  },
+  {
+    "capacity": 300,
+    "name": "VIP Lounge"
   }
 ]

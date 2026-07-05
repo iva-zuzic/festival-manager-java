@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,22 +21,31 @@ import java.util.List;
 import java.util.Set;
 
 public class JsonWorkerRepository implements WorkerRepository {
-    private static final Logger logger = LoggerFactory.getLogger(JsonWorkerRepository.class);
-    private static final Path WORKERS_FILE_PATH = Path.of("src/main/resources/data/workers.json");
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(JsonWorkerRepository.class);
+
+    private static final Path WORKERS_FILE_PATH =
+            Path.of("src/main/resources/data/workers.json");
+
     private final List<Worker> workers = new ArrayList<>();
     private final Set<String> existingEmails = new HashSet<>();
 
+    private static final class WorkerJsonList extends ArrayList<WorkerJson> {
+        @Serial
+        private static final long serialVersionUID = 1L;
+    }
+
     @Override
-    public void inputAllEntities() {
-        try {
+    public void inputAllEntities() throws IOException {
+        try (Jsonb jsonb = JsonbBuilder.create()) {
             String json = Files.readString(WORKERS_FILE_PATH);
 
-            Jsonb jsonb = JsonbBuilder.create();
+            Type workerListType =
+                    WorkerJsonList.class.getGenericSuperclass();
 
-            Type workerListType = new ArrayList<WorkerJson>() {
-            }.getClass().getGenericSuperclass();
-
-            List<WorkerJson> workerJsonList = jsonb.fromJson(json, workerListType);
+            List<WorkerJson> workerJsonList =
+                    jsonb.fromJson(json, workerListType);
 
             workers.clear();
             existingEmails.clear();
@@ -56,8 +66,16 @@ public class JsonWorkerRepository implements WorkerRepository {
 
             logger.info("Worker(radnik) podaci uspješno su učitani iz JSON datoteke.");
 
-        } catch (IOException | JsonbException exception) {
-            logger.error("Dogodila se pogreška kod čitanja radnika iz JSON datoteke.", exception);
+        } catch (JsonbException exception) {
+            throw new IOException(
+                    "Dogodila se pogreška kod parsiranja radnika iz JSON datoteke.",
+                    exception
+            );
+        } catch (Exception exception) {
+            throw new IOException(
+                    "Dogodila se pogreška kod zatvaranja JSON-B resursa.",
+                    exception
+            );
         }
     }
 
@@ -66,7 +84,7 @@ public class JsonWorkerRepository implements WorkerRepository {
         return workers;
     }
 
-    private void saveAllEntities() {
+    private void saveAllEntities() throws IOException {
         List<WorkerJson> workerJsonList = new ArrayList<>();
 
         for (Worker worker : workers) {
@@ -82,25 +100,35 @@ public class JsonWorkerRepository implements WorkerRepository {
             workerJsonList.add(workerJson);
         }
 
-        try {
-            JsonbConfig config = new JsonbConfig()
-                    .withFormatting(true);
+        JsonbConfig config = new JsonbConfig()
+                .withFormatting(true);
 
-            Jsonb jsonb = JsonbBuilder.create(config);
+        try (Jsonb jsonb = JsonbBuilder.create(config)) {
             String json = jsonb.toJson(workerJsonList);
 
             Files.writeString(WORKERS_FILE_PATH, json);
 
             logger.info("Worker(radnik) podaci uspješno su spremljeni u JSON datoteku.");
 
-        } catch (IOException | JsonbException exception) {
-            logger.error("Dogodila se pogreška kod spremanja radnika u JSON datoteku.", exception);
+        } catch (JsonbException exception) {
+            throw new IOException(
+                    "Dogodila se pogreška kod pretvaranja radnika u JSON format.",
+                    exception
+            );
+        } catch (Exception exception) {
+            throw new IOException(
+                    "Dogodila se pogreška kod zatvaranja JSON-B resursa.",
+                    exception
+            );
         }
     }
 
-    public void saveEntity(Worker worker) {
+    public void saveEntity(Worker worker) throws IOException {
         if (existingEmails.contains(worker.getEmail())) {
-            logger.warn("Radnik s email adresom {} već postoji i neće biti ponovno spremljen.", worker.getEmail());
+            logger.warn(
+                    "Radnik s email adresom {} već postoji i neće biti ponovno spremljen.",
+                    worker.getEmail()
+            );
             return;
         }
 

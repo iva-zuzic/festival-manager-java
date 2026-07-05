@@ -1,8 +1,10 @@
 package hr.tvz.festivalmanager.service;
 
 import hr.tvz.festivalmanager.entities.Artist;
+import hr.tvz.festivalmanager.entities.Member;
 import hr.tvz.festivalmanager.repository.ArtistRepository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -91,5 +93,42 @@ public class ArtistService {
         return artistRepository.getAllEntities().stream()
                 .map(Artist::getStageName)
                 .toList();
+    }
+
+    /**
+     * Pronalazi sve bendove kojima zadani član pripada.
+     *
+     * @param member član za kojeg se traže bendovi
+     * @return lista scenskih imena bendova, prazna ako član nije ni u jednom
+     */
+    public List<String> findBandsForMember(Member member) {
+        return artistRepository.getAllEntities().stream()
+                .filter(artist -> artist.getMembers().contains(member))
+                .map(Artist::getStageName)
+                .toList();
+    }
+
+    /**
+     * Računa ukupni iznos honorara svih umjetnika.
+     *
+     * @return ukupni honorar umjetnika
+     */
+    public BigDecimal calculateTotalArtistFees() {
+        return artistRepository.getAllEntities().stream()
+                .map(Artist::getFee)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    /**
+     * Računa prosječni honorar umjetnika po žanru.
+     *
+     * @return mapa u kojoj je ključ žanr, a vrijednost prosječni honorar tog žanra
+     */
+    public Map<Artist.Genre, Double> averageFeeByGenre() {
+        return artistRepository.getAllEntities().stream()
+                .collect(Collectors.groupingBy(
+                        Artist::getGenre,
+                        Collectors.averagingDouble(artist -> artist.getFee().doubleValue())
+                ));
     }
 }

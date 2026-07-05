@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,34 +26,50 @@ public class JsonMemberRepository implements MemberRepository {
     private final List<Member> members = new ArrayList<>();
     private final Set<String> existingEmails = new HashSet<>();
 
+    private static final class MemberJsonList extends ArrayList<MemberJson> {
+        @Serial
+        private static final long serialVersionUID = 1L;
+    }
+
     @Override
-    public void inputAllEntities() {
-        try {
+    public void inputAllEntities() throws IOException {
+        try (Jsonb jsonb = JsonbBuilder.create()) {
             String json = Files.readString(MEMBERS_FILE_PATH);
-            Jsonb jsonb = JsonbBuilder.create();
 
-            Type memberListType = new ArrayList<MemberJson>() {
-            }.getClass().getGenericSuperclass();
+            Type memberListType =
+                    MemberJsonList.class.getGenericSuperclass();
 
-            List<MemberJson> memberJsonList = jsonb.fromJson(json, memberListType);
+            List<MemberJson> memberJsonList =
+                    jsonb.fromJson(json, memberListType);
 
             members.clear();
             existingEmails.clear();
 
             for (MemberJson memberJson : memberJsonList) {
-                Member member = new Member(memberJson.getFirstName(),
+                Member member = new Member(
+                        memberJson.getFirstName(),
                         memberJson.getLastName(),
                         memberJson.getEmail(),
                         memberJson.getDateOfBirth(),
-                        memberJson.getRole());
+                        memberJson.getRole()
+                );
+
                 members.add(member);
                 existingEmails.add(member.getEmail());
             }
 
             logger.info("Member(član) podaci uspješno su učitani iz JSON datoteke.");
 
-        } catch (IOException | JsonbException exception) {
-            logger.error("Dogodila se pogreška kod čitanja članova iz JSON datoteke.", exception);
+        } catch (JsonbException exception) {
+            throw new IOException(
+                    "Dogodila se pogreška kod parsiranja članova iz JSON datoteke.",
+                    exception
+            );
+        } catch (Exception exception) {
+            throw new IOException(
+                    "Dogodila se pogreška kod zatvaranja JSON-B resursa.",
+                    exception
+            );
         }
     }
 
@@ -61,38 +78,52 @@ public class JsonMemberRepository implements MemberRepository {
         return members;
     }
 
-    private void saveAllEntities() {
+    private void saveAllEntities() throws IOException {
         List<MemberJson> memberJsonList = new ArrayList<>();
 
         for (Member member : members) {
-            MemberJson memberJson = new MemberJson(member.getFirstName(),
+            MemberJson memberJson = new MemberJson(
+                    member.getFirstName(),
                     member.getLastName(),
                     member.getEmail(),
                     member.getDateOfBirth(),
-                    member.getRole());
+                    member.getRole()
+            );
             memberJsonList.add(memberJson);
         }
 
-        try {
-            JsonbConfig config = new JsonbConfig()
-                    .withFormatting(true);
+        JsonbConfig config = new JsonbConfig()
+                .withFormatting(true);
 
-            Jsonb jsonb = JsonbBuilder.create(config);
+        try (Jsonb jsonb = JsonbBuilder.create(config)) {
             String json = jsonb.toJson(memberJsonList);
 
             Files.writeString(MEMBERS_FILE_PATH, json);
 
             logger.info("Member(član) podaci uspješno su spremljeni u JSON datoteku.");
-        } catch (IOException | JsonbException exception) {
-            logger.error("Dogodila se pogreška kod spremanja članova u JSON datoteku.", exception);
+
+        } catch (JsonbException exception) {
+            throw new IOException(
+                    "Dogodila se pogreška kod pretvaranja članova u JSON format.",
+                    exception
+            );
+        } catch (Exception exception) {
+            throw new IOException(
+                    "Dogodila se pogreška kod zatvaranja JSON-B resursa.",
+                    exception
+            );
         }
     }
 
-    public void saveEntity(Member member) {
+    public void saveEntity(Member member) throws IOException {
         if (existingEmails.contains(member.getEmail())) {
-            logger.warn("Član s email adresom {} već postoji i neće biti ponovno spremljen.", member.getEmail());
+            logger.warn(
+                    "Član s email adresom {} već postoji i neće biti ponovno spremljen.",
+                    member.getEmail()
+            );
             return;
         }
+
         members.add(member);
         existingEmails.add(member.getEmail());
         saveAllEntities();

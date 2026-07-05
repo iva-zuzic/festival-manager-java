@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -59,5 +60,19 @@ public class WorkerService {
         return workerRepository.getAllEntities().stream()
                 .map(Worker::getFee)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    /**
+     * Pronalazi najmanje plaćenog radnika koji nije volonter.
+     * Volonteri se izuzimaju jer su po definiciji neplaćeni, pa bi
+     * inače uvijek bili prepoznati kao najmanje plaćeni.
+     *
+     * @return {@link Optional} s najmanje plaćenim neplaćenim radnikom,
+     *         ili prazan {@link Optional} ako su svi radnici volonteri
+     */
+    public Optional<Worker> findLowestPaidNonVolunteer() {
+        return workerRepository.getAllEntities().stream()
+                .filter(worker -> worker.getRole() != Worker.Role.VOLONTER)
+                .min(Comparator.comparing(Worker::getFee));
     }
 }

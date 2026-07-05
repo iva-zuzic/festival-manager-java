@@ -1,6 +1,7 @@
 package hr.tvz.festivalmanager.entities;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -10,6 +11,7 @@ import java.util.Objects;
  * vrijeme početka i vrijeme završetka.
  */
 public class Performance implements Schedulable {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
     private Artist artist;
     private Stage stage;
     private LocalDateTime start;
@@ -87,5 +89,9 @@ public class Performance implements Schedulable {
     @Override
     public LocalDateTime getEnd() {
         return start.plusMinutes(duration);
+    }
+
+    public String getFormattedStart() {
+        return start.format(DATE_TIME_FORMATTER);
     }
 }

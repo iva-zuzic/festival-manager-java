@@ -19,5 +19,19 @@
     "email": "mia.babic@example.com",
     "dateOfBirth": "03.12.2002.",
     "role": "BUBNJAR"
+  },
+  {
+    "firstName": "Ivana",
+    "lastName": "Perić",
+    "email": "ivana.peric@example.com",
+    "dateOfBirth": "27.06.2000.",
+    "role": "BASIST"
+  },
+  {
+    "firstName": "Filip",
+    "lastName": "Novak",
+    "email": "filip.novak@example.com",
+    "dateOfBirth": "11.01.1998.",
+    "role": "KLAVIJATURIST"
   }
 ]
